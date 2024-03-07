@@ -21,7 +21,7 @@ void encryptVigenere(char *input, char *key) {
             // Aplica a cifra de Vigenere apenas para os caracteres permitidos
             input[i] = allowedChars[(charIndex + keyChar) % strlen(allowedChars)];
         }
-        // Se não estiver no conjunto permitido, mantenha o caractere inalterado
+        
     }
 }
 
