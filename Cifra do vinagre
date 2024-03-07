@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+
+void encryptVigenere(char *input, char *key) {
+    int inputam = strlen(input);
+    int keytam = strlen(key);
+
+    // Definindo o conjunto de caracteres 
+    const char allowedChars[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,;-";
+
+    for (int i = 0; i < inputam; i++) {
+        char currentChar = input[i];
+
+        // Verifica se o caractere está no conjunto permitido
+        char *charPtr = strchr(allowedChars, currentChar);
+        if (charPtr != NULL) {
+            int charIndex = charPtr - allowedChars;
+
+            char keyChar = key[i % keytam];
+
+            // Aplica a cifra de Vigenere apenas para os caracteres permitidos
+            input[i] = allowedChars[(charIndex + keyChar) % strlen(allowedChars)];
+        }
+        // Se não estiver no conjunto permitido, mantenha o caractere inalterado
+    }
+}
+
+int main() {
+    char input[100];
+    char key[100];
+
+    printf("Digite o texto a ser criptografado: ");
+    scanf("%99[^\n]", input);  // Para aceitar espaços
+
+    printf("Digite a chave: ");
+    scanf("%s", key);
+
+    encryptVigenere(input, key);
+
+    printf("Texto criptografado: %s\n", input);
+
+    return 0;
+}
