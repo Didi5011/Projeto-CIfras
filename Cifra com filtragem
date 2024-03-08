@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+void filterNonAllowedChars(char *str, const char *allowedChars);
+
+void encryptVigenere(char *input, char *key) {
+    filterNonAllowedChars(input, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,;-");
+
+    int inputam = strlen(input);
+    int keytam = strlen(key);
+
+    for (int i = 0; i < inputam; i++) {
+        char currentChar = input[i];
+        char keyChar = key[i % keytam];
+
+        input[i] = 'A' + (currentChar + keyChar - 2 * 'A') % 26;
+    }
+}
+
+void filterNonAllowedChars(char *str, const char *allowedChars) {
+    int index = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (strchr(allowedChars, str[i]) != NULL) {
+            str[index++] = str[i];
+        }
+    }
+    str[index] = '\0';
+}
+
+int main() {
+    char input[100];
+    char key[100];
+
+    printf("Digite o texto a ser criptografado: ");
+    scanf(" %[^\n]", input); // Para aceitar espaços
+
+    printf("Digite a chave: ");
+    scanf("%s", key);
+
+    encryptVigenere(input, key);
+
+    printf("Texto criptografado: %s\n", input);
+
+    return 0;
+}
