@@ -1,44 +1,47 @@
 #include <stdio.h>
 #include <string.h>
 
-void filterNonAllowedChars(char *str, const char *allowedChars);
+void decryptVigenere(char *input, const char *key, const char *allowedChars);
 
-void decryptVigenere(char *input, char *key) {
-    filterNonAllowedChars(input, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,;-");
+void decryptVigenere(char *input, const char *key, const char *allowedChars) {
+    int inputLen = strlen(input);
+    int keyLen = strlen(key);
+    int allowedCharsLen = strlen(allowedChars);
 
-    int inputam = strlen(input);
-    int keytam = strlen(key);
+    int outputIndex = 0;  // Índice para o resultado decifrado
 
-    for (int i = 0; i < inputam; i++) {
+    for (int i = 0; i < inputLen; i++) {
         char currentChar = input[i];
-        char keyChar = key[i % keytam];
 
-        int decryptedChar = 'A' + (currentChar - keyChar + 26) % 26;
-        input[i] = (char)((decryptedChar - 'A') % 26 + 'A');
-    }
-}
+        char *charPtr = strchr(allowedChars, currentChar);
 
-void filterNonAllowedChars(char *str, const char *allowedChars) {
-    int index = 0;
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (strchr(allowedChars, str[i]) != NULL) {
-            str[index++] = str[i];
+        if (charPtr != NULL) {
+            int charIndex = charPtr - allowedChars;
+            char keyChar = key[i % keyLen];
+            int keyIndex = strchr(allowedChars, keyChar) - allowedChars;
+
+            int decryptedIndex = (charIndex - keyIndex + allowedCharsLen) % allowedCharsLen;
+
+            // Adiciona o caractere decifrado ao resultado
+            input[outputIndex++] = allowedChars[decryptedIndex];
         }
     }
-    str[index] = '\0';
+
+    input[outputIndex] = '\0';
 }
 
 int main() {
     char input[100];
     char key[100];
+    const char allowedChars[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,;-";
 
     printf("Digite o texto a ser descriptografado: ");
-    scanf(" %[^\n]", input); // Para aceitar espaços
+    scanf("%99[^\n]", input);
 
     printf("Digite a chave: ");
     scanf("%s", key);
 
-    decryptVigenere(input, key);
+    decryptVigenere(input, key, allowedChars);
 
     printf("Texto descriptografado: %s\n", input);
 
