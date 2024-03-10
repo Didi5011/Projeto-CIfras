@@ -25,10 +25,8 @@ void encryptVigenere(char *input, const char *key, const char *allowedChars) {
             // Adiciona o caractere cifrado ao resultado
             input[outputIndex++] = allowedChars[encryptedIndex];
         }
-        // Se o caractere não estiver na lista permitida, apenas ignora
     }
 
-    // Adiciona o terminador de string ao resultado
     input[outputIndex] = '\0';
 }
 
